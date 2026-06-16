@@ -136,14 +136,14 @@ Write out what a full user interaction looks like from start to finish — tool 
 
 **Example user query:** "I'm looking for a vintage graphic tee under $30. I mostly wear baggy jeans and chunky sneakers. What's out there and how would I style it?"
 
-**Step 1:**
-<!-- What does the agent do first? Which tool is called? With what input? -->
+**Step 1: Search for matching listings**
+Agent calls `search_listings(description="vintage graphic tee", max_price=30.0, size=None)`. The tool filters the listings dataset by price (≤$30), searches title/description for "graphic tee" and "vintage", and returns 2–3 matching items sorted by relevance. Agent picks the top result: lst_006 "Graphic Tee — 2003 Tour Bootleg Style" at $24. If no listings match, the agent tells the user "I couldn't find any vintage graphic tees under $30. Try searching for a different style or increasing your budget" and stops.
 
-**Step 2:**
-<!-- What happens next? What was returned from step 1? What tool is called now? -->
+**Step 2: Suggest an outfit with the new item**
+Agent calls `suggest_outfit(new_item=lst_006_dict, wardrobe=user_wardrobe)` where user_wardrobe contains their baggy jeans, chunky sneakers, and other pieces. The tool analyzes style compatibility using color and style_tags, then returns outfit suggestions like "Pair this with your baggy jeans and chunky white sneakers for a 2000s streetwear vibe. The boxy fit of this tee balances the volume of the wide-legs." If the wardrobe is empty, the agent tells the user "I need to know more about your style first — tell me about pieces you already own" and stops without calling create_fit_card.
 
-**Step 3:**
-<!-- Continue until the full interaction is complete -->
+**Step 3: Generate a shareable fit card**
+Agent calls `create_fit_card(outfit=outfit_dict, new_item=lst_006_dict)` to generate a social media caption. The tool crafts a short, punchy post: "grabbed this '03-inspired bootleg tee from depop for $24 and the fit hits different with my baggy jeans 🖤 oversized all the way down". The agent returns this to the user along with the suggested outfit pairing.
 
 **Final output to user:**
-<!-- What does the user actually see at the end? -->
+"Found it! 🎯 **Graphic Tee — 2003 Tour Bootleg Style** ($24 on Depop, good condition). Here's how to style it: [outfit suggestion]. Try this caption: [fit card text]."
