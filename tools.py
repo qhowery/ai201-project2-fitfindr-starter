@@ -14,6 +14,7 @@ Tools:
 
 import os
 import re
+from typing import Optional
 
 from dotenv import load_dotenv
 from groq import Groq
@@ -91,8 +92,8 @@ def _score_listing(listing: dict, keywords: list[str]) -> int:
 
 def search_listings(
     description: str,
-    size: str | None = None,
-    max_price: float | None = None,
+    size: Optional[str] = None,
+    max_price: Optional[float] = None,
 ) -> list[dict]:
     """
     Search the mock listings dataset for items matching the description,
